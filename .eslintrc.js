@@ -10,7 +10,7 @@ module.exports = {
     // '@vue/typescript/recommended'
   ],
   parserOptions: {
-    ecmaVersion: 2020
+    parser: 'babel-eslint',
   },
   rules: {
     'semi': ['error', 'always'],
