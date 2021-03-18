@@ -1,9 +1,15 @@
 <template>
+<div>
+
     <div class="filter">
       <text-input label="URL репы" v-model="item.url"  @input="check($event)"></text-input>
       <text-input label="Период с" v-model="item.dateStart" type="date" @input="check($event)"></text-input>
       <text-input label="Период по" v-model="item.dateEnd" type="date" @input="check($event)"></text-input>
     </div>
+    <div>
+      <button v-on:click="onClick()">Кнопка</button>
+    </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -27,6 +33,12 @@ export default Vue.extend({
   methods: {
     check(payload: any) {
       console.log(payload);
+    },
+    onClick() {
+
+      console.log('test');
+      
+      new this.$http().get('');
     },
   },
 });
