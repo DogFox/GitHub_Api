@@ -12,6 +12,8 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
+    "no-extra-semi": "off",
+    quotes: ['error', 'single', { allowTemplateLiterals: true }],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }
