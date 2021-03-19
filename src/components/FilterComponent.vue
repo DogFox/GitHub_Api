@@ -9,6 +9,12 @@
     <div>
       <button v-on:click="onClick()">Кнопка</button>
     </div>
+    <div>
+        <a href="https://github.com/login/oauth/authorize?client_id=80984aed8beddbdcba77">
+          <button>Кнопка</button>
+
+        </a>
+    </div>
 </div>
 </template>
 
@@ -30,15 +36,39 @@ export default Vue.extend({
       },
     };
   },
+  computed: {
+    url_string(): string {
+      return window.location.href;
+    },
+    code(): string {
+      let url = new URL(this.url_string);
+      let code = url.searchParams.get('code');
+      console.log(code);
+      
+      return code ? code : '';
+    },
+  },
   methods: {
     check(payload: any) {
       console.log(payload);
     },
-    onClick() {
+    onClick() {},
+    authenticate(temp_code: string) {
+      console.log(temp_code);
 
-      console.log('test');
-      
-      new this.$http().get('');
+      new this.$http().auth_post(temp_code);
+    },
+  },
+  watch: {
+    code: {
+      immediate: true,
+      handler(to) {
+        console.log(to);
+        
+        if (to) {
+          this.authenticate(to);
+        }
+      },
     },
   },
 });
