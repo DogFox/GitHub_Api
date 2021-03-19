@@ -3,9 +3,9 @@ import Axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 // import { store } from '../store/index';
 export const axios = Axios.create({
 });
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common['Accept'] = 'application/json';
 
-const secret = '13a5957c867ed290fb9633ee8b3179b9c5aa3981';
+const secret = '86c146701c499f5854b4078da8efd90c1f1f84c8';
 const client_id = '80984aed8beddbdcba77';
 const BASE_URL = 'https://github.com/';
 const BASE_URL_AUTH = 'https://github.com/login/oauth/access_token';
@@ -21,13 +21,14 @@ export class ApiHttp {
     });
   }
   
-  async auth_post(code: string) {
+  async auth_post(code: string, state: string) {
     const item = {
       client_id: client_id,
-      clinet_secret: secret,
+      client_secret: secret,
       code: code,
+      state: state,
     }
-    return axios.post( BASE_URL_AUTH + '/', item, { headers: this.headers }).then(response => {
+    return axios.post( 'https://cors-anywhere.herokuapp.com/' + BASE_URL_AUTH + '/', item, { headers: this.headers }).then(response => {
       return response.data;
     });
   }
