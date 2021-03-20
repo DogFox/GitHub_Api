@@ -3,39 +3,32 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: [
-        'plugin:vue/essential',
-        // 'plugin:vue/recommended',
-    // '@vue/standard',
-    // '@vue/typescript/recommended'
-  ],
-  parserOptions: {
-    parser: 'babel-eslint',
-  },
+  extends: ['plugin:vue/recommended', '@vue/standard', '@vue/typescript/recommended'],
   rules: {
-    'semi': ['error', 'always'],
+    'object-shorthand': 'error',
+    curly: 'error',
+    'no-console': 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'space-before-function-paren': 'off',
+    semi: [2, 'always'],
     'comma-dangle': ['error', 'always-multiline'],
+    'no-empty': ['error'],
+    'eol-last': 'off',
     quotes: ['error', 'single', { allowTemplateLiterals: true }],
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'vue/max-attributes-per-line': ['warn', {
+      singleline: 10,
+      multiline: {
+        max: 1,
+        allowFirstLine: false,
+      },
+    }],
   },
-  overrides: [
-    {
-      files: [
-        '*.vue',
-        '*.ts',
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)',
-      ],
-      env: {
-        jest: true,
-      },
-      rules: {
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/ban-ts-ignore': 'off',
-        '@typescript-eslint/camelcase': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
-      },
-    },
+  "overrides": [
+      {
+        "files": ["**/*.ts", "**/*.tsx"],
+        "rules": {
+          "camelcase": ["off"]
+        }
+      }
   ],
 };
