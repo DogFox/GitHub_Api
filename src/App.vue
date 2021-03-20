@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/octocat.png" />
+    <img alt="Vue logo" src="./assets/octocat.png">
     <div class="hello">
       <h1>{{ msg }}</h1>
-      <filter-component v-if="isAuth"></filter-component>
+      <filter-component v-if="isAuth" />
       <auth-btn v-else />
     </div>
   </div>
@@ -38,5 +38,6 @@ export default Vue.extend({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  box-sizing: border-box;
 }
 </style>
