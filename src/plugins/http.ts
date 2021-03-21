@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
+import store from '../store/index';
 import { validateUrl } from './validator';
 
 // import { store } from '../store/index';
@@ -15,6 +16,10 @@ export class ApiHttp {
   private headers = {} as any;
 
   async get(url: string, params?: any) {
+    const token = store.getters.getToken();
+    if (token) {
+      this.headers.Authorization = 'Token ' + token;
+    }
     const config = Object.assign({}, { headers: this.headers }, { params }) as AxiosRequestConfig;
     const targetUrl = validateUrl(url);
     return axios.get(targetUrl, config).then(response => {
