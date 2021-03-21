@@ -12,6 +12,9 @@
     <div class="col-2">
       <span>Создан: {{ item.created }}</span>
     </div>
+    <div class="col-2">
+      <span>Дней открыт: {{ item.duration }}</span>
+    </div>
   </div>
 </template>
 

@@ -17,10 +17,12 @@
         <button class="tablinks" @click="type = 2">Закрытые</button>
         <button class="tablinks" @click="type = 3">Старые</button>
       </div>
-      <div v-for="item in choosenArray" v-bind:key="item.value">
-        <request-info :item="item"></request-info>
-        <!-- <span> Заголовок: {{ item.title }} Состояние: {{ item.state }} Автор: {{ item.user.login }} Создан: {{ item.created_at }} </span> -->
-      </div>
+
+      <list-component :list="choosenArray">
+        <template v-slot:default="{ item }">
+          <request-info :item="item"></request-info>
+        </template>
+      </list-component>
     </div>
   </div>
 </template>
@@ -31,9 +33,11 @@ import moment from 'moment';
 
 import SimpleButton from './SimpleButton.vue';
 import RequestInfo from './RequestInfo.vue';
+import ListComponent from './ListComponent.vue';
+
 export default Vue.extend({
   name: 'PullsComponent',
-  components: { SimpleButton, RequestInfo },
+  components: { SimpleButton, RequestInfo, ListComponent },
   props: {
     pulls: { type: Array, required: true },
     filter: { type: Object, required: true },
@@ -74,13 +78,14 @@ export default Vue.extend({
       // Подбили количество
       this.filteredPulls.forEach((pull: any) => {
         pull.created = moment(pull.created_at).format('YYYY-MM-DD');
+        pull.duration = moment().diff(pull.created, 'days');
         if (pull.state === 'open') {
           this.openPulls.push(pull);
+          if (pull.created < longwaitDate) {
+            this.longwaitPulls.push(pull);
+          }
         } else {
           this.closedPulls.push(pull);
-        }
-        if (pull.created < longwaitDate) {
-          this.longwaitPulls.push(pull);
         }
       });
     },
