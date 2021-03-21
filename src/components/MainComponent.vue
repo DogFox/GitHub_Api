@@ -3,14 +3,15 @@
     <filter-component :item="item" :branches="branches"></filter-component>
     <div>
       <simple-button @click="onClick()" text="О репе" />
-      <!-- <simple-button @click="getPulls()" text="Пуллреквесты" /> -->
+      <simple-button @click="getCommits()" text="Коммиты" />
     </div>
     <template v-if="branch">
       <template v-if="loading">
         <span>Загрузка данных...</span>
       </template>
       <template v-else>
-        <pull-requests :filter="item" :pulls="pulls"></pull-requests>
+        <contributors-component :filter="item" :commits="commits"></contributors-component>
+        <pull-requests v-if="false" :filter="item" :pulls="pulls"></pull-requests>
       </template>
     </template>
 
@@ -29,16 +30,17 @@ import SimpleButton from './SimpleButton.vue';
 import FilterComponent from './FilterComponent.vue';
 import PullRequests from './PullRequests.vue';
 import moment from 'moment';
+import ContributorsComponent from './ContributorsComponent.vue';
 
 export default Vue.extend({
   name: 'MainComponent',
-  components: { SimpleButton, FilterComponent, PullRequests },
+  components: { SimpleButton, FilterComponent, PullRequests, ContributorsComponent },
   props: {},
   data() {
     return {
       repository: {} as any,
       branches: [],
-      contributors: [],
+      commits: [],
       pulls: [],
       item: {
         url: 'microsoft/vscode',
@@ -56,8 +58,8 @@ export default Vue.extend({
     branches_url(): string {
       return this.repository && this.repository.url ? this.repository.url + '/branches' : '';
     },
-    contributors_url(): string {
-      return this.repository && this.repository.contributors_url ? this.repository.contributors_url : '';
+    commits_url(): string {
+      return this.repository && this.repository.url ? this.repository.url + '/commits' : '';
     },
     pulls_url(): string {
       return this.repository && this.repository.url ? this.repository.url + '/pulls' : '';
@@ -73,11 +75,17 @@ export default Vue.extend({
     async getBranches() {
       this.branches = await new this.$http().fetch(this.branches_url);
     },
-    async getContributors() {
-      const result = await new this.$http().get(this.contributors_url);
-      if (result) {
-        this.contributors = result;
-      }
+    async getCommits() {
+      this.loading = true;
+      const params = {
+        sha: this.item.branch,
+        state: 'all',
+        since: moment(this.item.dateStart).toISOString(),
+        until: moment(this.item.dateEnd).toISOString(),
+      };
+      this.commits = await new this.$http().fetch(this.commits_url, params);
+      this.loading = false;
+      console.log(this.commits);
     },
     async getPulls() {
       this.loading = true;
@@ -99,18 +107,13 @@ export default Vue.extend({
         }
       },
     },
-    contributors_url: {
+    branch: {
       immediate: true,
       handler(to) {
         if (to) {
-          this.getContributors();
+          this.getPulls();
+          this.getCommits();
         }
-      },
-    },
-    branch: {
-      immediate: true,
-      handler() {
-        this.getPulls();
       },
     },
   },
