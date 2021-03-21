@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main_wrapper">
     <filter-component :item="item" :branches="branches"></filter-component>
     <div>
       <simple-button @click="onClick()" text="О репе" />
@@ -106,7 +106,6 @@ export default Vue.extend({
 </script>
 
 <style>
-.filter {
-  display: inline-flex;
+.main_wrapper {
 }
 </style>

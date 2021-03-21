@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/octocat.png">
+    <img alt="Vue logo" src="./assets/octocat.png" />
     <div class="hello">
       <h1>{{ msg }}</h1>
       <main-component v-if="isAuth" />
@@ -31,6 +31,7 @@ export default Vue.extend({
 </script>
 
 <style>
+@import './styles/flex.scss';
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

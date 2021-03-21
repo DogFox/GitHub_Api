@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <div class="filter">
+  <div class="filter_wrapper">
+    <div class="row">
       <text-input v-model="item.url" label="URL репы" />
       <select-input v-model="item.branch" :items="branches" label="Ветка" item-text="name" />
     </div>
-    <div>
+    <div class="row">
       <text-input v-model="item.dateStart" label="Период с" type="date" />
       <text-input v-model="item.dateEnd" label="Период по" type="date" />
     </div>
@@ -15,7 +15,6 @@
 import Vue from 'vue';
 import TextInput from './TextInput.vue';
 import SelectInput from './SelectInput.vue';
-import moment from 'moment';
 
 export default Vue.extend({
   name: 'FilterComponent',
@@ -28,7 +27,12 @@ export default Vue.extend({
 </script>
 
 <style>
-.filter {
-  display: inline-flex;
+.filter_wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+.row {
+  justify-content: center;
 }
 </style>

@@ -1,16 +1,19 @@
 <template>
-  <div>
-    <simple-button @click="analizePulls()" text="АнализПуллов" />
-    <div>
-      <span> Всего за период: {{ filteredPulls.length }}</span>
-      <span> Открытых: {{ openPulls.length }}</span>
-      <span> Закрытых: {{ closedPulls.length }}</span>
-      <span> Старых: {{ longwaitPulls.length }}</span>
+  <div class="container">
+    <div class="row">
+      <simple-button class="col-4" @click="analizePulls()" text="АнализПуллов" />
+      <div class="col-8">
+        <span> Всего за период: {{ filteredPulls.length }}</span>
+        <span> Открытых: {{ openPulls.length }}</span>
+        <span> Закрытых: {{ closedPulls.length }}</span>
+        <span> Старых: {{ longwaitPulls.length }}</span>
+      </div>
     </div>
 
     <div>
       <div v-for="item in filteredPulls" v-bind:key="item.value">
-        <span> Заголовок: {{ item.title }} Состояние: {{ item.state }} Автор: {{ item.user.login }} Создан: {{ item.created_at }} </span>
+        <request-info :item="item"></request-info>
+        <!-- <span> Заголовок: {{ item.title }} Состояние: {{ item.state }} Автор: {{ item.user.login }} Создан: {{ item.created_at }} </span> -->
       </div>
     </div>
   </div>
@@ -21,9 +24,10 @@ import Vue from 'vue';
 import moment from 'moment';
 
 import SimpleButton from './SimpleButton.vue';
+import RequestInfo from './RequestInfo.vue';
 export default Vue.extend({
   name: 'PullsComponent',
-  components: { SimpleButton },
+  components: { SimpleButton, RequestInfo },
   props: {
     pulls: { type: Array, required: true },
     filter: { type: Object, required: true },
@@ -42,7 +46,9 @@ export default Vue.extend({
       this.filteredPulls = this.pulls.filter((pull: any) => {
         return moment(pull.created_at).format('YYYY-MM-DD') >= this.filter.dateStart && moment(pull.created_at).format('YYYY-MM-DD') <= this.filter.dateEnd;
       });
-
+      this.openPulls = [];
+      this.closedPulls = [];
+      this.longwaitPulls = [];
       const longwaitDate = moment().add(-30, 'days').format('YYYY-MM-DD');
       // Подбили количество
       this.filteredPulls.forEach((pull: any) => {
@@ -55,16 +61,10 @@ export default Vue.extend({
           this.longwaitPulls.push(pull);
         }
       });
-      console.log(this.pulls);
-      console.log(this.filteredPulls);
-      console.log(this.openPulls);
     },
   },
 });
 </script>
 
 <style>
-.filter {
-  display: inline-flex;
-}
 </style>
