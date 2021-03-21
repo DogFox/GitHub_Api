@@ -3,7 +3,7 @@
     <img alt="Vue logo" src="./assets/octocat.png">
     <div class="hello">
       <h1>{{ msg }}</h1>
-      <filter-component v-if="isAuth" />
+      <main-component v-if="isAuth" />
       <auth-btn v-else />
     </div>
   </div>
@@ -12,11 +12,11 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import FilterComponent from './components/FilterComponent.vue';
+import MainComponent from './components/MainComponent.vue';
 import AuthBtn from './components/AuthBtn.vue';
 
 export default Vue.extend({
-  components: { FilterComponent, AuthBtn },
+  components: { MainComponent, AuthBtn },
   data() {
     return {
       msg: 'Welcome to GitHub Reviewer',

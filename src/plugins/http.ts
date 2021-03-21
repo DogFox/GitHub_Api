@@ -15,6 +15,27 @@ const BASE_URL_AUTH = 'https://github.com/login/oauth/access_token';
 export class ApiHttp {
   private headers = {} as any;
 
+  async fetch(url: string, params?: any, options?:any) {
+    let resultArray = [] as any;
+    let fetchFlag = true;
+    let page = 0;
+    let paramString = '?per_page=50';
+    for (const key in params) {
+      paramString += '&' + key + '=' + params[key];
+    }
+    // Фетчим все пулл реквесты.
+    while (fetchFlag) {
+      page++;
+      const result = await this.get(url + paramString + `&page=${page}`);
+      if (result.length) {
+        resultArray = resultArray.concat(result);
+      } else {
+        fetchFlag = false;
+      }
+    }
+    return resultArray;
+  }
+
   async get(url: string, params?: any) {
     const token = store.getters.getToken();
     if (token) {

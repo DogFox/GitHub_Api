@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="filter">
-      <text-input label="URL репы" v-model="item.url" @input="check($event)"></text-input>
-      <text-input label="Период с" v-model="item.dateStart" type="date" @input="check($event)"></text-input>
-      <text-input label="Период по" v-model="item.dateEnd" type="date" @input="check($event)"></text-input>
+      <text-input v-model="item.url" label="URL репы" />
+      <select-input v-model="item.branch" :items="branches" label="Ветка" item-text="name" />
     </div>
     <div>
-      <button v-on:click="onClick()">Кнопка</button>
+      <text-input v-model="item.dateStart" label="Период с" type="date" />
+      <text-input v-model="item.dateEnd" label="Период по" type="date" />
     </div>
   </div>
 </template>
@@ -14,26 +14,21 @@
 <script lang="ts">
 import Vue from 'vue';
 import TextInput from './TextInput.vue';
+import SelectInput from './SelectInput.vue';
 import moment from 'moment';
 
 export default Vue.extend({
   name: 'FilterComponent',
-  components: { TextInput },
-  props: {},
-  data() {
-    return {
-      item: {
-        url: '',
-        dateStart: moment().format('YYYY-MM-DD'),
-        dateEnd: moment().format('YYYY-MM-DD'),
-      },
-    };
-  },
-  methods: {
-    check(payload: any) {
-      console.log(payload);
-    },
-    onClick() {},
+  components: { TextInput, SelectInput },
+  props: {
+    item: { type: Object, required: true },
+    branches: { type: Array, required: true },
   },
 });
 </script>
+
+<style>
+.filter {
+  display: inline-flex;
+}
+</style>
