@@ -5,9 +5,6 @@
       <simple-button @click="onClick()" text="О репе" />
       <simple-button @click="getPulls()" text="Пуллреквесты" />
     </div>
-    <div>
-      {{ item }}
-    </div>
 
     <pull-requests :filter="item" :pulls="pulls"></pull-requests>
 
@@ -106,6 +103,4 @@ export default Vue.extend({
 </script>
 
 <style>
-.main_wrapper {
-}
 </style>

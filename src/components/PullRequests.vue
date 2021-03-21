@@ -10,8 +10,14 @@
       </div>
     </div>
 
-    <div>
-      <div v-for="item in filteredPulls" v-bind:key="item.value">
+    <div class="col-12">
+      <div class="tab">
+        <button class="tablinks" @click="type = 0">Все</button>
+        <button class="tablinks" @click="type = 1">Открытые</button>
+        <button class="tablinks" @click="type = 2">Закрытые</button>
+        <button class="tablinks" @click="type = 3">Старые</button>
+      </div>
+      <div v-for="item in choosenArray" v-bind:key="item.value">
         <request-info :item="item"></request-info>
         <!-- <span> Заголовок: {{ item.title }} Состояние: {{ item.state }} Автор: {{ item.user.login }} Создан: {{ item.created_at }} </span> -->
       </div>
@@ -34,11 +40,26 @@ export default Vue.extend({
   },
   data() {
     return {
+      type: 0,
       filteredPulls: [] as any,
       openPulls: [] as any,
       closedPulls: [] as any,
       longwaitPulls: [] as any,
     };
+  },
+  computed: {
+    choosenArray(): any {
+      switch (this.type) {
+        case 1:
+          return this.openPulls;
+        case 2:
+          return this.closedPulls;
+        case 3:
+          return this.longwaitPulls;
+        default:
+          return this.filteredPulls;
+      }
+    },
   },
   methods: {
     analizePulls() {
@@ -52,12 +73,13 @@ export default Vue.extend({
       const longwaitDate = moment().add(-30, 'days').format('YYYY-MM-DD');
       // Подбили количество
       this.filteredPulls.forEach((pull: any) => {
+        pull.created = moment(pull.created_at).format('YYYY-MM-DD');
         if (pull.state === 'open') {
           this.openPulls.push(pull);
         } else {
           this.closedPulls.push(pull);
         }
-        if (moment(pull.created_at).format('YYYY-MM-DD') < longwaitDate) {
+        if (pull.created < longwaitDate) {
           this.longwaitPulls.push(pull);
         }
       });
@@ -67,4 +89,16 @@ export default Vue.extend({
 </script>
 
 <style>
+.tab {
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+.tablinks {
+  border: none;
+  padding: 15px 15px;
+  margin: 1px 1px;
+}
+.tablinks:hover {
+  background-color: #ddd;
+}
 </style>
