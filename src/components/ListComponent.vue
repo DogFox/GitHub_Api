@@ -3,7 +3,7 @@
     <div v-for="item in paginatedList" v-bind:key="item.value">
       <slot :item="item"></slot>
     </div>
-    <div class="pagination row" v-if="!hide || noPagination">
+    <div class="pagination row" v-if="!hide || !noPagination">
       <div class="col-6">
         <div class="row pages">
           <span>{{ page + 1 }} / {{ maxPage }}</span>

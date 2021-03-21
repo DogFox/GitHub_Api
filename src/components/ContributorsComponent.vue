@@ -3,17 +3,15 @@
     <div class="row">
       <simple-button class="col-4" @click="analizeCommits()" text="Анализ коммитов" />
     </div>
-
     <div class="col-12">
       <div class="tab">
         <button class="tablinks" @click="type = 0">Активные</button>
         <button class="tablinks" @click="type = 1">Пассивные</button>
       </div>
 
-      <list-component :list="contributors">
+      <list-component :list="sortedContributors" :rows="30" no-pagination>
         <template v-slot:default="{ item }">
-          <span>Логин: {{ item.name }}</span>
-          <span>Коммитов: {{ item.count }}</span>
+          <author-info :item="item"></author-info>
         </template>
       </list-component>
     </div>
@@ -24,9 +22,10 @@
 import Vue from 'vue';
 import SimpleButton from './SimpleButton.vue';
 import ListComponent from './ListComponent.vue';
+import AuthorInfo from './AuthorInfo.vue';
 
 export default Vue.extend({
-  components: { SimpleButton, ListComponent },
+  components: { SimpleButton, ListComponent, AuthorInfo },
   props: {
     commits: { type: Array, required: true },
     filter: { type: Object, required: true },
@@ -34,24 +33,29 @@ export default Vue.extend({
   data() {
     return {
       contributors: [] as any,
+      type: 0,
     };
+  },
+  computed: {
+    sortedContributors(): any {
+      return [...this.contributors]
+        .sort((a: any, b: any) => {
+          return this.type ? a.count - b.count : b.count - a.count;
+        })
+        .slice(0, 30);
+    },
   },
   methods: {
     analizeCommits() {
-      this.contributors = this.commits.reduce((total: any, commit: any) => {
-        const index = total.findIndex((obj: any) => obj.name === commit.author.login);
-        if (index >= 0) {
-          total[index].count++;
-        } else {
-          total.push({
-            name: commit.author.login,
-            count: 1,
-          });
-        }
+      const contr = this.commits.reduce((total: any, commit: any) => {
+        total[commit.author.login] = (total[commit.author.login] || 0) + 1;
         return total;
-      }, []);
+      }, {}) as any;
 
-      console.log(this.contributors);
+      this.contributors = [];
+      for (const name in contr) {
+        this.contributors.push({ name, count: contr[name] });
+      }
     },
   },
 });
