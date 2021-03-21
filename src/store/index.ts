@@ -12,8 +12,8 @@ const state: SystemState = {
 
 export default new Vuex.Store({
   state,
-  getters:{
-      // текущий токен
+  getters: {
+    // текущий токен
     getToken: (state: SystemState) => () => {
       return state.sessionToken;
     },
@@ -22,13 +22,13 @@ export default new Vuex.Store({
       return !!state.sessionToken;
     },
   },
-  mutations: { 
-    SET_TOKEN(state, sessionToken: string) {
+  mutations: {
+    SET_TOKEN (state, sessionToken: string) {
       state.sessionToken = sessionToken;
     },
   },
   actions: {
-    async SIGN_IN({ commit, dispatch }, token: string) {
+    async SIGN_IN ({ commit, dispatch }, token: string) {
       if (token) {
         commit('SET_TOKEN', token);
         return true;
@@ -39,4 +39,3 @@ export default new Vuex.Store({
   modules: {
   },
 });
- 
