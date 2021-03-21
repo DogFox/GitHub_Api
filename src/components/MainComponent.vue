@@ -3,10 +3,16 @@
     <filter-component :item="item" :branches="branches"></filter-component>
     <div>
       <simple-button @click="onClick()" text="О репе" />
-      <simple-button @click="getPulls()" text="Пуллреквесты" />
+      <!-- <simple-button @click="getPulls()" text="Пуллреквесты" /> -->
     </div>
-
-    <pull-requests :filter="item" :pulls="pulls"></pull-requests>
+    <template v-if="branch">
+      <template v-if="loading">
+        <span>Загрузка данных...</span>
+      </template>
+      <template v-else>
+        <pull-requests :filter="item" :pulls="pulls"></pull-requests>
+      </template>
+    </template>
 
     <!-- <div>
       <span>{{ contributors.length }}</span>
@@ -40,9 +46,13 @@ export default Vue.extend({
         dateEnd: moment().format('YYYY-MM-DD'),
         branch: '',
       },
+      loading: false,
     };
   },
   computed: {
+    branch(): string {
+      return this.item.branch;
+    },
     branches_url(): string {
       return this.repository && this.repository.url ? this.repository.url + '/branches' : '';
     },
@@ -54,9 +64,6 @@ export default Vue.extend({
     },
   },
   methods: {
-    check(payload: any) {
-      console.log(payload);
-    },
     async onClick() {
       const result = await new this.$http().get('repos/' + this.item.url);
       if (result) {
@@ -73,11 +80,13 @@ export default Vue.extend({
       }
     },
     async getPulls() {
+      this.loading = true;
       const params = {
         base: this.item.branch,
         state: 'all',
       };
       this.pulls = await new this.$http().fetch(this.pulls_url, params);
+      this.loading = false;
     },
   },
 
@@ -96,6 +105,12 @@ export default Vue.extend({
         if (to) {
           this.getContributors();
         }
+      },
+    },
+    branch: {
+      immediate: true,
+      handler() {
+        this.getPulls();
       },
     },
   },

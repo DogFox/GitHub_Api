@@ -3,7 +3,7 @@
     <div v-for="item in paginatedList" v-bind:key="item.value">
       <slot :item="item"></slot>
     </div>
-    <div class="pagination row" v-if="!hide">
+    <div class="pagination row" v-if="!hide || noPagination">
       <div class="col-6">
         <div class="row pages">
           <span>{{ page + 1 }} / {{ maxPage }}</span>
@@ -28,6 +28,7 @@ export default Vue.extend({
   props: {
     list: { type: Array, required: true },
     rows: { type: Number, default: 25 },
+    noPagination: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -37,10 +38,8 @@ export default Vue.extend({
   },
   computed: {
     paginatedList(): any {
-      const from = this.page * (+this.rowCount);
-      const to = from + (+this.rowCount);
-      console.log(from, to);
-
+      const from = this.page * +this.rowCount;
+      const to = from + +this.rowCount;
       return this.list.slice(from, to);
     },
     maxPage(): number {

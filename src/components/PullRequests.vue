@@ -52,6 +52,9 @@ export default Vue.extend({
     };
   },
   computed: {
+    pullsLength(): number {
+      return this.pulls.length;
+    },
     choosenArray(): any {
       switch (this.type) {
         case 1:
@@ -88,6 +91,14 @@ export default Vue.extend({
           this.closedPulls.push(pull);
         }
       });
+    },
+  },
+  watch: {
+    filter: {
+      handler() {
+        this.analizePulls();
+      },
+      deep: true,
     },
   },
 });
