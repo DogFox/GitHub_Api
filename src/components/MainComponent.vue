@@ -36,7 +36,7 @@ export default Vue.extend({
       pulls: [],
       item: {
         url: 'microsoft/vscode',
-        dateStart: moment().format('YYYY-MM-DD'),
+        dateStart: moment([2021, 1, 1]).format('YYYY-MM-DD'),
         dateEnd: moment().format('YYYY-MM-DD'),
         branch: '',
       },

@@ -3,31 +3,44 @@
     <div v-for="item in paginatedList" v-bind:key="item.value">
       <slot :item="item"></slot>
     </div>
-    <div v-if="!hide">
-      <button class="pagination" @click="decreasePage()">Туда</button>
-      <button class="pagination" @click="increasePage()">Сюда</button>
+    <div class="pagination row" v-if="!hide">
+      <div class="col-6">
+        <div class="row pages">
+          <span>{{ page + 1 }} / {{ maxPage }}</span>
+          <text-input v-model="rowCount" size="3"></text-input>
+        </div>
+      </div>
+      <div>
+        <button class="btn" @click="decreasePage()">Туда</button>
+        <button class="btn" @click="increasePage()">Сюда</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import TextInput from './TextInput.vue';
 
 export default Vue.extend({
+  components: { TextInput },
   name: 'ListComponent',
   props: {
     list: { type: Array, required: true },
-    rowCount: { type: Number, default: 25 },
+    rows: { type: Number, default: 25 },
   },
   data() {
     return {
       page: 0,
+      rowCount: this.rows,
     };
   },
   computed: {
     paginatedList(): any {
-      const from = this.page * this.rowCount;
-      const to = from + this.rowCount;
+      const from = this.page * (+this.rowCount);
+      const to = from + (+this.rowCount);
+      console.log(from, to);
+
       return this.list.slice(from, to);
     },
     maxPage(): number {
@@ -60,8 +73,14 @@ export default Vue.extend({
 });
 </script>
 
-<style>
+<style scoped>
+.row {
+  justify-content: start;
+}
 .pagination {
+  border-top: 1px solid black;
+}
+.pagination .btn {
   margin: 5px;
 }
 </style>
