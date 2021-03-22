@@ -2,25 +2,19 @@
   <div class="main_wrapper">
     <filter-component :item="item" :branches="branches"></filter-component>
     <div>
-      <simple-button @click="onClick()" text="О репе" />
-      <simple-button @click="getCommits()" text="Коммиты" />
+      <simple-button @click="onClick()" text="О репозитории" />
+      <!-- <simple-button @click="getCommits()" text="Коммиты" /> -->
     </div>
-    <template v-if="branch">
+    {{ item }}
+    <template v-if="showData">
       <template v-if="loading">
         <span>Загрузка данных...</span>
       </template>
       <template v-else>
         <contributors-component :filter="item" :commits="commits"></contributors-component>
-        <pull-requests v-if="false" :filter="item" :pulls="pulls"></pull-requests>
+        <pull-requests :filter="item" :pulls="pulls"></pull-requests>
       </template>
     </template>
-
-    <!-- <div>
-      <span>{{ contributors.length }}</span>
-      <div v-for="item in contributors" v-bind:key="item.value">
-        <span> Логин: {{ item.login }} Коммиты: {{ item.contributions }} </span>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -44,11 +38,12 @@ export default Vue.extend({
       pulls: [],
       item: {
         url: 'microsoft/vscode',
-        dateStart: moment([2021, 1, 1]).format('YYYY-MM-DD'),
-        dateEnd: moment().format('YYYY-MM-DD'),
-        branch: '',
+        dateStart: '',
+        dateEnd: '',
+        branch: 'main',
       },
       loading: false,
+      showData: false,
     };
   },
   computed: {
@@ -67,10 +62,16 @@ export default Vue.extend({
   },
   methods: {
     async onClick() {
-      const result = await new this.$http().get('repos/' + this.item.url);
+      // https://api.github.com/repos/microsoft/vscode
+      // Если http найден - считаем что ссылка полная
+      let reposUrl = '';
+      const index = this.item.url.indexOf('http');
+      reposUrl += (index >= 0 ? '' : 'repos/') + this.item.url;
+      const result = await new this.$http().get(reposUrl);
       if (result) {
         this.repository = result;
       }
+      this.showData = true;
     },
     async getBranches() {
       this.branches = await new this.$http().fetch(this.branches_url);
@@ -85,7 +86,6 @@ export default Vue.extend({
       };
       this.commits = await new this.$http().fetch(this.commits_url, params);
       this.loading = false;
-      console.log(this.commits);
     },
     async getPulls() {
       this.loading = true;
