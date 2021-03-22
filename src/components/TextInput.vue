@@ -5,6 +5,7 @@
     </div>
     <input v-bind="$attrs" :value="value" :type="type" list="reps" @input="onChange($event)" />
     <datalist id="reps">
+      <option v-if="loading" :value="value" selected>Идет загрузка...</option>
       <option v-for="hint in hints" :key="hint" :value="hint" />
     </datalist>
   </div>
@@ -22,6 +23,7 @@ export default Vue.extend({
     label: { type: String, default: '' },
     type: { type: String, default: 'text' },
     value: { type: [Number, String], default: undefined },
+    loading: { type: Boolean, default: false },
     hints: {
       type: Array,
       default: () => {

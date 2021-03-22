@@ -1,5 +1,5 @@
 <template>
-  <text-input :value="value" label="URL репозитория" :hints="hints" @input="$emit('input', $event)" />
+  <text-input :value="value" label="URL репозитория" :hints="hints" @input="$emit('input', $event)" :loading="loading" />
 </template>
 
 <script lang="ts">
@@ -19,6 +19,7 @@ export default Vue.extend({
   data() {
     return {
       hints: [],
+      loading: false,
     };
   },
   methods: {
@@ -31,11 +32,13 @@ export default Vue.extend({
         usersReposUrl = 'users/' + parsedUrl[0] + '/repos';
       }
       let hintResult = null;
+      this.loading = true;
       try {
         hintResult = await new this.$http().fetch(usersReposUrl);
       } catch (error) {
         return;
       }
+      this.loading = false;
       // const hintResult = await new this.$http().fetch(usersReposUrl);
       this.hints = hintResult.map((rep: any) => {
         return rep.full_name;
