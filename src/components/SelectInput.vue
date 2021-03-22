@@ -4,7 +4,7 @@
       {{ label }}
     </div>
     <select class="select" :value="value" @change="onChange($event)">
-      <option v-for="item in items" v-bind:key="item.value">
+      <option v-for="item in preparedArray" :key="item.index" :selected="item.index === selectedIndex">
         {{ item[itemText] }}
       </option>
     </select>
@@ -25,8 +25,16 @@ export default Vue.extend({
     value: { type: String, default: undefined },
     items: { type: Array, required: true },
   },
-  data() {
-    return {};
+  computed: {
+    preparedArray(): any {
+      return this.items.map((item: any, index: number) => {
+        item.index = index;
+        return item;
+      });
+    },
+    selectedIndex(): number {
+      return this.preparedArray.findIndex((item: any) => item[this.itemText] === this.value);
+    },
   },
   methods: {
     onChange(payload: any) {
