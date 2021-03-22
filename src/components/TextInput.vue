@@ -3,7 +3,10 @@
     <div class="label">
       {{ label }}
     </div>
-    <input :value="value" :type="type" @input="onChange($event)" v-bind="$attrs" />
+    <input v-bind="$attrs" :value="value" :type="type" list="reps" @input="onChange($event)" />
+    <datalist id="reps">
+      <option v-for="hint in hints" :key="hint" :value="hint" />
+    </datalist>
   </div>
 </template>
 
@@ -19,6 +22,12 @@ export default Vue.extend({
     label: { type: String, default: '' },
     type: { type: String, default: 'text' },
     value: { type: [Number, String], default: undefined },
+    hints: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
   data() {
     return {};

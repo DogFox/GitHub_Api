@@ -1,7 +1,7 @@
 <template>
   <div class="filter_wrapper">
     <div class="row">
-      <text-input v-model="item.url" label="URL репы" />
+      <repository-input v-model="item.url" />
       <select-input v-model="item.branch" :items="branches" label="Ветка" item-text="name" />
     </div>
     <div class="row">
@@ -15,10 +15,11 @@
 import Vue from 'vue';
 import TextInput from './TextInput.vue';
 import SelectInput from './SelectInput.vue';
+import RepositoryInput from './RepositoryInput.vue';
 
 export default Vue.extend({
   name: 'FilterComponent',
-  components: { TextInput, SelectInput },
+  components: { TextInput, SelectInput, RepositoryInput },
   props: {
     item: { type: Object, required: true },
     branches: { type: Array, required: true },
@@ -26,7 +27,7 @@ export default Vue.extend({
 });
 </script>
 
-<style>
+<style >
 .filter_wrapper {
   display: flex;
   width: 100%;
