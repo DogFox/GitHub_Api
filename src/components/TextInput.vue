@@ -42,16 +42,20 @@ export default Vue.extend({
 });
 </script>
 
-<style>
+<style scoped>
 .input-wrapper {
   padding: 5px 10px 5px 10px;
   margin: 0px 10px 0px 10px;
+  width: 100%;
 }
 .input {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
   border: none;
   border-bottom: 1px solid black;
   height: 30px;
   outline: none;
+  width: 100%;
 }
 .input:focus {
   border: none;
