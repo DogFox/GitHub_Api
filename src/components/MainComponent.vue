@@ -47,9 +47,6 @@ export default Vue.extend({
     };
   },
   computed: {
-    branch(): string {
-      return this.item.branch;
-    },
     branches_url(): string {
       return this.repository && this.repository.url ? this.repository.url + '/branches' : '';
     },
@@ -96,6 +93,10 @@ export default Vue.extend({
       this.pulls = await new this.$http().fetch(this.pulls_url, params);
       this.loading = false;
     },
+    fetchData() {
+      this.getPulls();
+      this.getCommits();
+    },
   },
 
   watch: {
@@ -107,12 +108,24 @@ export default Vue.extend({
         }
       },
     },
-    branch: {
-      immediate: true,
+    'item.branch': {
       handler(to) {
         if (to) {
-          this.getPulls();
-          this.getCommits();
+          this.fetchData();
+        }
+      },
+    },
+    'item.dateStart': {
+      handler(to) {
+        if (to) {
+          this.fetchData();
+        }
+      },
+    },
+    'item.dateEnd': {
+      handler(to) {
+        if (to) {
+          this.fetchData();
         }
       },
     },
