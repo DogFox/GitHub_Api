@@ -51,5 +51,9 @@ export default Vue.extend({
 }
 .select {
   min-width: 200px;
+  border: none;
+  border-bottom: 1px solid black;
+  height: 30px;
+  outline: none;
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="label">
       {{ label }}
     </div>
-    <input v-bind="$attrs" :value="value" :type="type" list="reps" @input="onChange($event)" />
+    <input class="input" v-bind="$attrs" :value="value" :type="type" list="reps" @input="onChange($event)" />
     <datalist id="reps">
       <option v-if="loading" :value="value" selected>Идет загрузка...</option>
       <option v-for="hint in hints" :key="hint" :value="hint" />
@@ -46,5 +46,16 @@ export default Vue.extend({
 .input-wrapper {
   padding: 5px 10px 5px 10px;
   margin: 0px 10px 0px 10px;
+}
+.input {
+  border: none;
+  border-bottom: 1px solid black;
+  height: 30px;
+  outline: none;
+}
+.input:focus {
+  border: none;
+  border-bottom: 1px solid blue;
+  transition: all .5s ;
 }
 </style>

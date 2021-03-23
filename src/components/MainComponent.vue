@@ -37,7 +37,7 @@ export default Vue.extend({
       commits: [],
       pulls: [],
       item: {
-        url: 'microsoft/vscode',
+        url: 'octocat/hello',
         dateStart: '',
         dateEnd: '',
         branch: 'main',
