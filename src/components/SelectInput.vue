@@ -3,8 +3,8 @@
     <div class="label">
       {{ label }}
     </div>
-    <select class="select" :value="value" @change="onChange($event)">
-      <option v-for="item in preparedArray" :key="item.index" :selected="item.index === selectedIndex">
+    <select class="select" :value="value" @change="onChange($event.target.value)">
+      <option v-for="item in preparedArray" :key="item.index" :selected="checkSelected(item.index)">
         {{ item[itemText] }}
       </option>
     </select>
@@ -33,12 +33,20 @@ export default Vue.extend({
       });
     },
     selectedIndex(): number {
-      return this.preparedArray.findIndex((item: any) => item[this.itemText] === this.value);
+      const index = this.preparedArray.findIndex((item: any) => item[this.itemText] === this.value);
+      return index === -1 ? 0 : index;
     },
   },
   methods: {
-    onChange(payload: any) {
-      this.$emit('change', payload.target.value);
+    checkSelected(index: number) {
+      if (index === this.selectedIndex) {
+        this.onChange(this.preparedArray[index][this.itemText]);
+        return true;
+      }
+      return false;
+    },
+    onChange(value: string) {
+      this.$emit('change', value);
     },
   },
 });
