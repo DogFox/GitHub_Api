@@ -38,8 +38,8 @@ export default Vue.extend({
       pulls: [],
       item: {
         url: 'octocat/hello',
-        dateStart: '',
-        dateEnd: '',
+        dateStart: null,
+        dateEnd: null,
         branch: 'main',
       },
       loading: false,
