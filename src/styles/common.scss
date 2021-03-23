@@ -4,14 +4,27 @@
    position: relative;
    top: 5px;
 }
-
-button {
+/* button.button - кнопка с class="button", а то табы тоже через кнопку */
+button.button {
    height: 30px;
    background-color: rgba(192, 192, 192, 0.5);
    border: none;
    border-radius: 5px;
 }
-button:hover {
+button.button:hover {
    background-color: rgba(192, 192, 192, 1);
    transition: all 0.5s;
+}
+
+.tab {
+   border: 1px solid #ccc;
+   background-color: #f1f1f1;
+}
+.tablinks {
+   border: none;
+   padding: 15px 15px;
+   margin: 1px 1px;
+}
+.tablinks:hover {
+   background-color: #ddd;
 }

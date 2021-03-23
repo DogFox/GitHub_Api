@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <button @click="$emit('click')">{{ text }}</button>
+    <button class="button" @click="$emit('click')">{{ text }}</button>
   </div>
 </template>
 
