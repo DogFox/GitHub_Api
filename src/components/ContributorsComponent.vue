@@ -48,7 +48,9 @@ export default Vue.extend({
   methods: {
     analizeCommits() {
       const contr = this.commits.reduce((total: any, commit: any) => {
-        total[commit.author.login] = (total[commit.author.login] || 0) + 1;
+        // Попадаются коммиты без автора в commit.author, но он указан все равно в commit.commit
+        const login = commit.author?.login || commit.commit.author.name;
+        total[login] = (total[login] || 0) + 1;
         return total;
       }, {}) as any;
 

@@ -72,7 +72,10 @@ export default Vue.extend({
     analizePulls() {
       // Отфильтровали по периоду времени
       this.filteredPulls = this.pulls.filter((pull: any) => {
-        return moment(pull.created_at).format('YYYY-MM-DD') >= this.filter.dateStart && moment(pull.created_at).format('YYYY-MM-DD') <= this.filter.dateEnd;
+        let toBeOrNotToBe = false;
+        toBeOrNotToBe = !this.filter.dateStart || moment(pull.created_at).format('YYYY-MM-DD') >= this.filter.dateStart;
+        toBeOrNotToBe = !this.filter.dateEnd || moment(pull.created_at).format('YYYY-MM-DD') <= this.filter.dateEnd;
+        return toBeOrNotToBe;
       });
       this.openPulls = [];
       this.closedPulls = [];

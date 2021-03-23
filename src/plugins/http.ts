@@ -21,7 +21,8 @@ export class ApiHttp {
     let page = 0;
     let paramString = '?per_page=50';
     for (const key in params) {
-      paramString += '&' + key + '=' + params[key];
+      // Если пропс нулл, то его посылать не надо
+      paramString += params[key] ? '&' + key + '=' + params[key] : '';
     }
     // Фетчим все пулл реквесты.
     while (fetchFlag) {
