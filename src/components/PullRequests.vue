@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <simple-button class="col-4" @click="analizePulls()" text="АнализПуллов" />
+      <simple-button  v-if="false" class="col-4" @click="analizePulls()" text="АнализПуллов" />
       <div class="col-8">
         <span> Всего за период: {{ filteredPulls.length }}</span>
         <span> Открытых: {{ openPulls.length }}</span>
@@ -102,6 +102,11 @@ export default Vue.extend({
         this.analizePulls();
       },
       deep: true,
+    },
+    pullsLength: {
+      handler() {
+        this.analizePulls();
+      },
     },
   },
 });

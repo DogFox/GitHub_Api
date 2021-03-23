@@ -1,8 +1,9 @@
 <template>
   <div class="main_wrapper">
     <filter-component :item="item" :branches="branches"></filter-component>
-    <div>
+    <div class="row">
       <simple-button @click="onClick()" text="О репозитории" />
+      <simple-button @click="clearFilter()" text="Сбросить фильтры" />
       <!-- <simple-button @click="getCommits()" text="Коммиты" /> -->
     </div>
     {{ item }}
@@ -58,6 +59,14 @@ export default Vue.extend({
     },
   },
   methods: {
+    clearFilter() {
+      this.item = {
+        url: 'octocat/hello',
+        dateStart: null,
+        dateEnd: null,
+        branch: 'main',
+      };
+    },
     async onClick() {
       // https://api.github.com/repos/microsoft/vscode
       // Если http найден - считаем что ссылка полная
@@ -93,10 +102,6 @@ export default Vue.extend({
       this.pulls = await new this.$http().fetch(this.pulls_url, params);
       this.loading = false;
     },
-    fetchData() {
-      this.getPulls();
-      this.getCommits();
-    },
   },
 
   watch: {
@@ -111,21 +116,23 @@ export default Vue.extend({
     'item.branch': {
       handler(to) {
         if (to) {
-          this.fetchData();
+          this.getPulls();
+          this.getCommits();
         }
       },
     },
+    // Не надо забирать реквесты, там все равно нет фильтра по дате, а коммиты как раз отфильтруем сразу при запросе
     'item.dateStart': {
       handler(to) {
         if (to) {
-          this.fetchData();
+          this.getCommits();
         }
       },
     },
     'item.dateEnd': {
       handler(to) {
         if (to) {
-          this.fetchData();
+          this.getCommits();
         }
       },
     },
