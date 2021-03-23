@@ -1,7 +1,17 @@
-
 .label {
-   font-size: .8rem;
+   font-size: 0.8rem;
    text-align: left;
    position: relative;
    top: 5px;
- }
+}
+
+button {
+   height: 30px;
+   background-color: rgba(192, 192, 192, 0.5);
+   border: none;
+   border-radius: 5px;
+}
+button:hover {
+   background-color: rgba(192, 192, 192, 1);
+   transition: all 0.5s;
+}

@@ -1,12 +1,20 @@
 <template>
   <div class="filter_wrapper">
     <div class="row">
-      <repository-input v-model="item.url" />
-      <select-input v-model="item.branch" :items="branches" label="Ветка" item-text="name" />
+      <div class="col-6">
+        <repository-input v-model="item.url" />
+      </div>
+      <div class="col-6">
+        <select-input v-model="item.branch" :items="branches" label="Ветка" item-text="name" />
+      </div>
     </div>
     <div class="row">
-      <text-input v-model="item.dateStart" label="Период с" type="date" />
-      <text-input v-model="item.dateEnd" label="Период по" type="date" />
+      <div class="col-6">
+        <text-input v-model="item.dateStart" label="Период с" type="date" />
+      </div>
+      <div class="col-6">
+        <text-input v-model="item.dateEnd" label="Период по" type="date" />
+      </div>
     </div>
   </div>
 </template>
