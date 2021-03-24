@@ -1,8 +1,5 @@
 <template>
   <div class="container">
-    <div class="row">
-      <simple-button class="col-4" @click="analizeCommits()" text="Анализ коммитов" />
-    </div>
     <div class="col-12">
       <tabs-bar :items="tabs" itemText="name" @selected="type = $event.type" />
       <list-component :list="sortedContributors" :rows="30" no-pagination>
@@ -16,13 +13,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import SimpleButton from './SimpleButton.vue';
 import ListComponent from './ListComponent.vue';
 import AuthorInfo from './AuthorInfo.vue';
 import TabsBar from './TabsBar.vue';
 
 export default Vue.extend({
-  components: { SimpleButton, ListComponent, AuthorInfo, TabsBar },
+  components: { ListComponent, AuthorInfo, TabsBar },
   props: {
     commits: { type: Array, required: true },
     filter: { type: Object, required: true },
@@ -36,6 +32,9 @@ export default Vue.extend({
         { name: 'Пассивные', type: 1 },
       ],
     };
+  },
+  created() {
+    this.analizeCommits();
   },
   computed: {
     commitsLength(): number {

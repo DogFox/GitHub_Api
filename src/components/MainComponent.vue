@@ -12,8 +12,9 @@
         <span>Загрузка данных...</span>
       </template>
       <template v-else>
-        <contributors-component :filter="item" :commits="commits"></contributors-component>
-        <pull-requests :filter="item" :pulls="pulls"></pull-requests>
+        <tabs-bar :items="tabs" itemText="name" @selected="type = $event.type" />
+        <contributors-component v-if="type === 0" :filter="item" :commits="commits"></contributors-component>
+        <pull-requests v-else :filter="item" :pulls="pulls"></pull-requests>
       </template>
     </template>
   </div>
@@ -26,11 +27,11 @@ import FilterComponent from './FilterComponent.vue';
 import PullRequests from './PullRequests.vue';
 import moment from 'moment';
 import ContributorsComponent from './ContributorsComponent.vue';
+import TabsBar from './TabsBar.vue';
 
 export default Vue.extend({
   name: 'MainComponent',
-  components: { SimpleButton, FilterComponent, PullRequests, ContributorsComponent },
-  props: {},
+  components: { SimpleButton, FilterComponent, PullRequests, ContributorsComponent, TabsBar },
   data() {
     return {
       repository: {} as any,
@@ -45,6 +46,11 @@ export default Vue.extend({
       },
       loading: false,
       showData: false,
+      tabs: [
+        { name: 'Коммиты', type: 0 },
+        { name: 'Пулл реквесты', type: 1 },
+      ],
+      type: 0,
     };
   },
   computed: {

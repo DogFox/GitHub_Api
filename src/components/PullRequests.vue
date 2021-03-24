@@ -52,6 +52,9 @@ export default Vue.extend({
       ],
     };
   },
+  created() {
+    this.analizePulls();
+  },
   computed: {
     pullsLength(): number {
       return this.pulls.length;
