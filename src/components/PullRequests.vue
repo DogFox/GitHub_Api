@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <simple-button v-if="false" class="col-4" @click="analizePulls()" text="АнализПуллов" />
-      <div class="col-8">
+      <div class="summary">
         <span> Всего за период: {{ filteredPulls.length }}</span>
         <span> Открытых: {{ openPulls.length }}</span>
         <span> Закрытых: {{ closedPulls.length }}</span>
@@ -48,7 +48,7 @@ export default Vue.extend({
       headers: [
         { title: 'Заголовок', cols: 6, field: 'title' },
         { title: 'Состояние', cols: 2, field: 'state' },
-        { title: 'Автор', cols: 2, field: 'user.login' },
+        { title: 'Автор', cols: 2, field: 'username' },
         { title: 'Создан', cols: 2, field: 'created' },
         { title: 'Дней открыт', cols: 2, field: 'duration' },
       ],
@@ -91,6 +91,7 @@ export default Vue.extend({
       this.filteredPulls.forEach((pull: any) => {
         pull.created = moment(pull.created_at).format('YYYY-MM-DD');
         pull.duration = moment().diff(pull.created, 'days');
+        pull.username = pull.user.login;
         if (pull.state === 'open') {
           this.openPulls.push(pull);
           if (pull.created < longwaitDate) {
@@ -118,5 +119,13 @@ export default Vue.extend({
 });
 </script>
 
-<style>
+<style scoped>
+.row {
+  justify-content: flex-start;
+}
+.summary span {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
 </style>
