@@ -4,15 +4,17 @@
       <slot :item="item"></slot>
     </div>
     <div class="pagination row" v-if="!hide || !noPagination">
-      <div class="col-6">
-        <div class="row pages">
-          <span>{{ page + 1 }} / {{ maxPage }}</span>
-          <text-input v-model="rowCount" size="3"></text-input>
+      <div class="row left">
+        <div class="page_number">
+          <span>{{ page + 1 }}</span>
+          <span> / </span>
+          <span>{{ maxPage }}</span>
         </div>
+        <input class="input small" v-model="rowCount" size="3" />
       </div>
-      <div>
-        <button class="btn" @click="decreasePage()">Туда</button>
-        <button class="btn" @click="increasePage()">Сюда</button>
+      <div class="row right">
+        <button class="button left_arrow" @click="decreasePage()">Туда</button>
+        <button class="button right_arrow" @click="increasePage()">Сюда</button>
       </div>
     </div>
   </div>
@@ -20,10 +22,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import TextInput from './TextInput.vue';
 
 export default Vue.extend({
-  components: { TextInput },
   name: 'ListComponent',
   props: {
     list: { type: Array, required: true },
@@ -73,13 +73,44 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.row {
-  justify-content: start;
+.page_number {
+  position: relative;
+  top: 10px;
+}
+.small {
+  max-width: 75px;
+  font-size: 8px;
+  margin: 0 0 0 10px;
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+}
+.left {
+  justify-content: flex-start;
+}
+.right {
+  justify-content: flex-end;
 }
 .pagination {
   border-top: 1px solid black;
+  justify-content: space-between;
 }
-.pagination .btn {
-  margin: 5px;
+.button {
+  margin-top: 5px;
+  min-width: 75px;
+}
+.left_arrow {
+  margin-right: 10px;
+  background-image: url('../assets/keyboard_arrow_left-24px.svg');
+  background-repeat: no-repeat;
+  background-position-y: 3px;
+}
+.right_arrow {
+  margin-left: 10px;
+  background-image: url('../assets/keyboard_arrow_right-24px.svg');
+  background-repeat: no-repeat;
+  background-position-x: right;
+  background-position-y: 3px;
 }
 </style>
