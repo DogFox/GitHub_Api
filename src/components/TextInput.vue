@@ -43,11 +43,6 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.input-wrapper {
-  padding: 5px 10px 5px 10px;
-  margin: 0px 10px 0px 10px;
-  width: 100%;
-}
 .input {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;

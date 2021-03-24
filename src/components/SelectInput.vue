@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="input-wrapper">
     <div class="label">
       {{ label }}
     </div>
@@ -53,13 +53,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.wrapper {
-  padding: 5px 10px 5px 10px;
-  margin: 0px 10px 0px 10px;
-  width: 100%;
-}
 .select {
-  min-width: 200px;
   border: none;
   border-bottom: 1px solid black;
   height: 30px;

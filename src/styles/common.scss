@@ -16,15 +16,23 @@ button.button:hover {
    transition: all 0.5s;
 }
 
-.tab {
+.input-wrapper {
+   padding: 5px 10px 5px 10px;
+   width: 100%;
+}
+.tabs {
    border: 1px solid #ccc;
    background-color: #f1f1f1;
 }
-.tablinks {
+.tab {
    border: none;
    padding: 15px 15px;
    margin: 1px 1px;
 }
-.tablinks:hover {
+.tab:hover {
    background-color: #ddd;
 }
+span {
+   font-size: 0.8rem;
+}
+
