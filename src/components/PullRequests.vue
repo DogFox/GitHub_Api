@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <simple-button  v-if="false" class="col-4" @click="analizePulls()" text="АнализПуллов" />
+      <simple-button v-if="false" class="col-4" @click="analizePulls()" text="АнализПуллов" />
       <div class="col-8">
         <span> Всего за период: {{ filteredPulls.length }}</span>
         <span> Открытых: {{ openPulls.length }}</span>
@@ -11,13 +11,7 @@
     </div>
 
     <div class="col-12">
-      <div class="tab">
-        <button class="tablinks" @click="type = 0">Все</button>
-        <button class="tablinks" @click="type = 1">Открытые</button>
-        <button class="tablinks" @click="type = 2">Закрытые</button>
-        <button class="tablinks" @click="type = 3">Старые</button>
-      </div>
-
+      <tabs-bar :items="tabs" itemText="name" @selected="type = $event.type" />
       <list-component :list="choosenArray">
         <template v-slot:default="{ item }">
           <request-info :item="item"></request-info>
@@ -34,10 +28,11 @@ import moment from 'moment';
 import SimpleButton from './SimpleButton.vue';
 import RequestInfo from './RequestInfo.vue';
 import ListComponent from './ListComponent.vue';
+import TabsBar from './TabsBar.vue';
 
 export default Vue.extend({
   name: 'PullsComponent',
-  components: { SimpleButton, RequestInfo, ListComponent },
+  components: { SimpleButton, RequestInfo, ListComponent, TabsBar },
   props: {
     pulls: { type: Array, required: true },
     filter: { type: Object, required: true },
@@ -49,6 +44,12 @@ export default Vue.extend({
       openPulls: [] as any,
       closedPulls: [] as any,
       longwaitPulls: [] as any,
+      tabs: [
+        { name: 'Все', type: 0 },
+        { name: 'Открытые', type: 1 },
+        { name: 'Закрытые', type: 2 },
+        { name: 'Старые', type: 3 },
+      ],
     };
   },
   computed: {
@@ -113,16 +114,4 @@ export default Vue.extend({
 </script>
 
 <style>
-.tab {
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
-.tablinks {
-  border: none;
-  padding: 15px 15px;
-  margin: 1px 1px;
-}
-.tablinks:hover {
-  background-color: #ddd;
-}
 </style>

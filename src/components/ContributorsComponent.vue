@@ -4,11 +4,7 @@
       <simple-button class="col-4" @click="analizeCommits()" text="Анализ коммитов" />
     </div>
     <div class="col-12">
-      <div class="tab">
-        <button class="tablinks" @click="type = 0">Активные</button>
-        <button class="tablinks" @click="type = 1">Пассивные</button>
-      </div>
-
+      <tabs-bar :items="tabs" itemText="name" @selected="type = $event.type" />
       <list-component :list="sortedContributors" :rows="30" no-pagination>
         <template v-slot:default="{ item }">
           <author-info :item="item"></author-info>
@@ -23,9 +19,10 @@ import Vue from 'vue';
 import SimpleButton from './SimpleButton.vue';
 import ListComponent from './ListComponent.vue';
 import AuthorInfo from './AuthorInfo.vue';
+import TabsBar from './TabsBar.vue';
 
 export default Vue.extend({
-  components: { SimpleButton, ListComponent, AuthorInfo },
+  components: { SimpleButton, ListComponent, AuthorInfo, TabsBar },
   props: {
     commits: { type: Array, required: true },
     filter: { type: Object, required: true },
@@ -34,9 +31,16 @@ export default Vue.extend({
     return {
       contributors: [] as any,
       type: 0,
+      tabs: [
+        { name: 'Активные', type: 0 },
+        { name: 'Пассивные', type: 1 },
+      ],
     };
   },
   computed: {
+    commitsLength(): number {
+      return this.commits.length;
+    },
     sortedContributors(): any {
       return [...this.contributors]
         .sort((a: any, b: any) => {
@@ -58,6 +62,13 @@ export default Vue.extend({
       for (const name in contr) {
         this.contributors.push({ name, count: contr[name] });
       }
+    },
+  },
+  watch: {
+    commitsLength: {
+      handler() {
+        this.analizeCommits();
+      },
     },
   },
 });
