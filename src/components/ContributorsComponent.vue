@@ -2,11 +2,7 @@
   <div class="container">
     <div class="col-12">
       <tabs-bar :items="tabs" itemText="name" @selected="type = $event.type" />
-      <list-component :list="sortedContributors" :rows="30" no-pagination>
-        <template v-slot:default="{ item }">
-          <author-info :item="item"></author-info>
-        </template>
-      </list-component>
+      <list-component :list="sortedContributors" :rows="30" no-pagination :headers="headers" />
     </div>
   </div>
 </template>
@@ -14,11 +10,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import ListComponent from './ListComponent.vue';
-import AuthorInfo from './AuthorInfo.vue';
 import TabsBar from './TabsBar.vue';
 
 export default Vue.extend({
-  components: { ListComponent, AuthorInfo, TabsBar },
+  components: { ListComponent, TabsBar },
   props: {
     commits: { type: Array, required: true },
     filter: { type: Object, required: true },
@@ -30,6 +25,10 @@ export default Vue.extend({
       tabs: [
         { name: 'Активные', type: 0 },
         { name: 'Пассивные', type: 1 },
+      ],
+      headers: [
+        { title: 'Автор', cols: 8, field: 'name' },
+        { title: 'Коммитов', cols: 4, field: 'count' },
       ],
     };
   },

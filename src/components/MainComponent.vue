@@ -6,7 +6,7 @@
       <simple-button @click="clearFilter()" text="Сбросить фильтры" />
       <!-- <simple-button @click="getCommits()" text="Коммиты" /> -->
     </div>
-    {{ item }}
+    <!-- {{ item }} -->
     <template v-if="showData">
       <template v-if="loading">
         <span>Загрузка данных...</span>

@@ -1,7 +1,15 @@
 <template>
   <div class="list">
+    <div class="row headers">
+        <!-- Пахнет как костыль -->
+      <div v-for="header in headers" :class="'col-' + header.cols" :key="header.field">
+        <span class="header">{{ header.title }}</span>
+      </div>
+    </div>
     <div v-for="item in paginatedList" v-bind:key="item.value">
-      <slot :item="item"></slot>
+      <slot :item="item" :headers="headers">
+        <list-row-info :item="item" :headers="headers"></list-row-info>
+      </slot>
     </div>
     <div class="pagination row" v-if="!hide || !noPagination">
       <div class="row left">
@@ -22,13 +30,21 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import ListRowInfo from './ListRowInfo.vue';
 
 export default Vue.extend({
   name: 'ListComponent',
+  components: { ListRowInfo },
   props: {
     list: { type: Array, required: true },
     rows: { type: Number, default: 25 },
     noPagination: { type: Boolean, default: false },
+    headers: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
   data() {
     return {
@@ -112,5 +128,15 @@ export default Vue.extend({
   background-repeat: no-repeat;
   background-position-x: right;
   background-position-y: 3px;
+}
+.headers {
+  text-align: start;
+  justify-content: space-between;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+}
+.headers span {
+  font-size: 16px;
 }
 </style>

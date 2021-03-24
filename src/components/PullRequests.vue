@@ -12,11 +12,7 @@
 
     <div class="col-12">
       <tabs-bar :items="tabs" itemText="name" @selected="type = $event.type" />
-      <list-component :list="choosenArray">
-        <template v-slot:default="{ item }">
-          <request-info :item="item"></request-info>
-        </template>
-      </list-component>
+      <list-component :list="choosenArray" :headers="headers" />
     </div>
   </div>
 </template>
@@ -26,13 +22,12 @@ import Vue from 'vue';
 import moment from 'moment';
 
 import SimpleButton from './SimpleButton.vue';
-import RequestInfo from './RequestInfo.vue';
 import ListComponent from './ListComponent.vue';
 import TabsBar from './TabsBar.vue';
 
 export default Vue.extend({
   name: 'PullsComponent',
-  components: { SimpleButton, RequestInfo, ListComponent, TabsBar },
+  components: { SimpleButton, ListComponent, TabsBar },
   props: {
     pulls: { type: Array, required: true },
     filter: { type: Object, required: true },
@@ -49,6 +44,13 @@ export default Vue.extend({
         { name: 'Открытые', type: 1 },
         { name: 'Закрытые', type: 2 },
         { name: 'Старые', type: 3 },
+      ],
+      headers: [
+        { title: 'Заголовок', cols: 6, field: 'title' },
+        { title: 'Состояние', cols: 2, field: 'state' },
+        { title: 'Автор', cols: 2, field: 'user.login' },
+        { title: 'Создан', cols: 2, field: 'created' },
+        { title: 'Дней открыт', cols: 2, field: 'duration' },
       ],
     };
   },
