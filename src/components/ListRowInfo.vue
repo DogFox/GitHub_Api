@@ -32,4 +32,9 @@ export default Vue.extend({
   background-color: darkgray;
   color: blue;
 }
+@media (max-width: 600px) {
+  span {
+    font-size: 12px;
+  }
+}
 </style>

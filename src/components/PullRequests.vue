@@ -46,9 +46,9 @@ export default Vue.extend({
         { name: 'Старые', type: 3 },
       ],
       headers: [
-        { title: 'Заголовок', cols: 6, field: 'title' },
-        { title: 'Состояние', cols: 2, field: 'state' },
-        { title: 'Автор', cols: 2, field: 'username' },
+        { title: 'Заголовок', cols: 4, field: 'title' },
+        { title: 'Состояние', cols: 3, field: 'state' },
+        { title: 'Автор', cols: 3, field: 'username' },
         { title: 'Создан', cols: 2, field: 'created' },
         { title: 'Дней открыт', cols: 2, field: 'duration' },
       ],

@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <div class="row headers">
-        <!-- Пахнет как костыль -->
+      <!-- Пахнет как костыль -->
       <div v-for="header in headers" :class="'col-' + header.cols" :key="header.field">
         <span class="header">{{ header.title }}</span>
       </div>
@@ -138,5 +138,10 @@ export default Vue.extend({
 }
 .headers span {
   font-size: 16px;
+}
+@media (max-width: 600px) {
+  .headers span {
+    font-size: 12px;
+  }
 }
 </style>
