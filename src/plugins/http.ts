@@ -1,19 +1,27 @@
-import Vue from 'vue';
 import Axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import store from '../store/index';
 import { validateUrl } from './validator';
+import { makeState } from './generator';
 
 // import { store } from '../store/index';
 export const axios = Axios.create({
 });
 axios.defaults.headers.common.Accept = 'application/json';
 
-const client_secret = '86c146701c499f5854b4078da8efd90c1f1f84c8';
-const client_id = '80984aed8beddbdcba77';
-const BASE_URL_AUTH = 'https://github.com/login/oauth/access_token';
+const BASE_URL_AUTH = 'https://github.com/login/oauth/';
 
 export class ApiHttp {
   private headers = {} as any;
+  private state = '';
+  private client_secret = '86c146701c499f5854b4078da8efd90c1f1f84c8';
+  private client_id = '80984aed8beddbdcba77';
+
+  public current_url = new URL(window.location.href).origin
+
+  getAuthUrl() {
+    this.state = makeState();
+    return BASE_URL_AUTH + `authorize?client_id=${this.client_id}&state=${this.state}&redirect_uri=${this.current_url}`;
+  }
 
   async fetch(url: string, params?: any, options?:any) {
     let resultArray = [] as any;
@@ -49,14 +57,14 @@ export class ApiHttp {
     });
   }
 
-  async auth(code: string, state: string) {
+  async auth(code: string) {
     const item = {
-      client_id,
-      client_secret,
+      client_id: this.client_id,
+      client_secret: this.client_secret,
       code,
-      state,
+      state: this.state,
     };
-    return axios.post('https://cors-anywhere.herokuapp.com/' + BASE_URL_AUTH + '/', item, { headers: this.headers }).then(response => {
+    return axios.post('https://cors-anywhere.herokuapp.com/' + BASE_URL_AUTH + 'access_token/', item, { headers: this.headers }).then(response => {
       return response.data;
     });
   }

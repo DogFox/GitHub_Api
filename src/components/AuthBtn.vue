@@ -1,7 +1,7 @@
 <template>
   <div>
-    <a href="https://github.com/login/oauth/authorize?client_id=80984aed8beddbdcba77&state=80984aed">
-      <button>GitHub</button>
+    <a :href="url">
+      <button class="button">GitHub</button>
     </a>
   </div>
 </template>
@@ -12,7 +12,7 @@ import Vue from 'vue';
 export default Vue.extend({
   data () {
     return {
-      state: '80984aed',
+      url: new this.$http().getAuthUrl(),
     };
   },
   computed: {
@@ -37,10 +37,10 @@ export default Vue.extend({
   },
   methods: {
     async authenticate (tempCode: string) {
-      const result = await new this.$http().auth(tempCode, this.state);
+      const result = await new this.$http().auth(tempCode);
       if (result && result.access_token) {
         const accessToken = result.access_token;
-        const isAuth = this.$store.dispatch('SIGN_IN', accessToken);
+        this.$store.dispatch('SIGN_IN', accessToken);
       }
     },
   },
